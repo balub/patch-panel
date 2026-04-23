@@ -26,8 +26,14 @@ export interface StoredState {
   rawYaml?: string;
   config?: NormalizedConfig;
   displayMode?: DisplayMode;
+  barHeight?: number;
+  autoHide?: boolean;
   schemaVersion?: 1;
 }
+
+export const BAR_HEIGHT_DEFAULT = 30;
+export const BAR_HEIGHT_MIN = 20;
+export const BAR_HEIGHT_MAX = 60;
 
 export type ValidationResult =
   | { ok: true; config: NormalizedConfig }

@@ -93,7 +93,7 @@
 
 .dropdown {
   position: fixed;
-  top: 30px;
+  top: var(--bar-height, 30px);
   left: 0;
   min-width: 180px;
   max-width: 320px;
@@ -115,6 +115,23 @@
   max-width: none;
   height: 30px;
   padding: 0 12px;
+}
+
+.cog {
+  margin-left: auto;
+  padding: 0 10px;
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+
+.cog:hover { opacity: 1; }
+
+.bar[data-mode='icon_only'] .cog,
+.bar[data-mode='text_only'] .cog,
+.bar[data-mode='icon_text'] .cog {
+  max-width: none;
 }
 
 @media (prefers-color-scheme: dark) {

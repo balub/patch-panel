@@ -25,6 +25,13 @@
           accept=".yaml,.yml,text/yaml,application/x-yaml"
         />
         <div id="status" role="status"></div>
+        <p class="hint secondary">
+          Need a starting point?
+          <button type="button" id="download-mock" class="link-button">
+            Download an example YAML
+          </button>
+          — edit it, then upload above.
+        </p>
       </section>
 
       <section>
@@ -34,6 +41,27 @@
           <label><input type="radio" name="mode" value="icon_only" /> Icon only</label>
           <label><input type="radio" name="mode" value="icon_text" /> Icon + text</label>
           <label><input type="radio" name="mode" value="text_only" /> Text only</label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Bar appearance</h2>
+        <div class="control">
+          <label for="bar-height">Bar height</label>
+          <div class="slider-row">
+            <input type="range" id="bar-height" min="20" max="60" step="1" />
+            <span id="bar-height-value" class="slider-value">30 px</span>
+          </div>
+          <p class="hint">Between 20 and 60 pixels. Dropdowns align automatically.</p>
+        </div>
+        <div class="control">
+          <label class="checkbox-row">
+            <input type="checkbox" id="auto-hide" />
+            <span>Auto-hide the bar</span>
+          </label>
+          <p class="hint">
+            Hide the bar off-screen until the cursor nears the top edge.
+          </p>
         </div>
       </section>
 
