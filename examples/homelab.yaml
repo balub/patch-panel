@@ -1,0 +1,115 @@
+title: My Homelab
+displayMode: icon_text
+
+items:
+  - type: service
+    name: Proxmox
+    url: https://proxmox.local:8006
+    icon: https://www.google.com/s2/favicons?domain=proxmox.com&sz=64
+
+  - type: service
+    name: Portainer
+    url: https://portainer.local:9443
+    icon: https://www.google.com/s2/favicons?domain=portainer.io&sz=64
+
+  - type: service
+    name: Home Assistant
+    url: http://homeassistant.local:8123
+    icon: https://www.google.com/s2/favicons?domain=home-assistant.io&sz=64
+
+  - type: group
+    name: Monitoring
+    icon: https://www.google.com/s2/favicons?domain=grafana.com&sz=64
+    items:
+      - type: service
+        name: Grafana
+        url: https://grafana.local
+        icon: https://www.google.com/s2/favicons?domain=grafana.com&sz=64
+
+      - type: service
+        name: Prometheus
+        url: https://prometheus.local
+        icon: https://www.google.com/s2/favicons?domain=prometheus.io&sz=64
+
+      - type: service
+        name: Uptime Kuma
+        url: https://kuma.local
+        icon: https://www.google.com/s2/favicons?domain=github.com&sz=64
+
+      - type: service
+        name: Loki
+        url: https://loki.local
+
+  - type: group
+    name: Media
+    icon: https://www.google.com/s2/favicons?domain=plex.tv&sz=64
+    items:
+      - type: service
+        name: Plex
+        url: http://plex.local:32400/web
+        icon: https://www.google.com/s2/favicons?domain=plex.tv&sz=64
+
+      - type: service
+        name: Jellyfin
+        url: http://jellyfin.local:8096
+        icon: https://www.google.com/s2/favicons?domain=jellyfin.org&sz=64
+
+      - type: service
+        name: Sonarr
+        url: http://sonarr.local:8989
+        icon: https://www.google.com/s2/favicons?domain=sonarr.tv&sz=64
+
+      - type: service
+        name: Radarr
+        url: http://radarr.local:7878
+        icon: https://www.google.com/s2/favicons?domain=radarr.video&sz=64
+
+      - type: service
+        name: Immich
+        url: http://immich.local:2283
+        icon: https://www.google.com/s2/favicons?domain=immich.app&sz=64
+
+  - type: group
+    name: Networking
+    items:
+      - type: service
+        name: Pi-hole
+        url: http://pihole.local/admin
+        icon: https://www.google.com/s2/favicons?domain=pi-hole.net&sz=64
+
+      - type: service
+        name: UniFi
+        url: https://unifi.local:8443
+        icon: https://www.google.com/s2/favicons?domain=ui.com&sz=64
+
+      - type: service
+        name: OPNsense
+        url: https://opnsense.local
+        icon: https://www.google.com/s2/favicons?domain=opnsense.org&sz=64
+
+  - type: group
+    name: Storage
+    items:
+      - type: service
+        name: TrueNAS
+        url: https://truenas.local
+        icon: https://www.google.com/s2/favicons?domain=truenas.com&sz=64
+
+      - type: service
+        name: MinIO
+        url: https://minio.local:9001
+        icon: https://www.google.com/s2/favicons?domain=min.io&sz=64
+
+      - type: service
+        name: Nextcloud
+        url: https://nextcloud.local
+        icon: https://www.google.com/s2/favicons?domain=nextcloud.com&sz=64
+
+  - type: service
+    name: Vaultwarden
+    url: https://vault.local
+    icon: https://www.google.com/s2/favicons?domain=bitwarden.com&sz=64
+
+  - type: service
+    name: Unnamed Tool
+    url: http://internal.local:3000
