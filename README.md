@@ -1,6 +1,6 @@
 # Patch Panel
 
-![Patch Panel demo](./Cap%202026-04-24%20at%2000.11.08.gif)
+![Patch Panel demo](./docs/Cap%202026-04-24%20at%2000.11.08.gif)
 
 A YAML-driven, bookmarks-bar-style launcher for homelab services.
 
