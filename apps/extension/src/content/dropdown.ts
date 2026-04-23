@@ -1,3 +1,5 @@
+import type { BarPosition } from '../shared/types';
+
 const CLOSE_DELAY_MS = 150;
 
 let openDropdown: HTMLElement | null = null;
@@ -5,6 +7,22 @@ let openAnchor: HTMLElement | null = null;
 let closeTimer: number | null = null;
 let globalHandlersRegistered = false;
 let activeShadow: ShadowRoot | null = null;
+
+interface BarContext {
+  position: BarPosition;
+  barHeight: number;
+  barWidth: number;
+}
+
+let barContext: BarContext = {
+  position: 'top',
+  barHeight: 30,
+  barWidth: 180,
+};
+
+export function setBarContext(ctx: BarContext) {
+  barContext = ctx;
+}
 
 function cancelClose() {
   if (closeTimer !== null) {
@@ -53,6 +71,35 @@ function registerGlobalHandlers() {
   );
 }
 
+function positionPanel(anchor: HTMLElement, panel: HTMLElement) {
+  const rect = anchor.getBoundingClientRect();
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const panelWidth = panel.offsetWidth || 220;
+  const panelHeight = panel.offsetHeight || 0;
+
+  panel.dataset.position = barContext.position;
+
+  if (barContext.position === 'top') {
+    const left = Math.min(rect.left, vw - panelWidth - 4);
+    panel.style.top = '';
+    panel.style.left = `${Math.max(0, left)}px`;
+    return;
+  }
+
+  const top = Math.max(
+    4,
+    Math.min(rect.top, vh - panelHeight - 4),
+  );
+  panel.style.top = `${top}px`;
+
+  if (barContext.position === 'left') {
+    panel.style.left = `${barContext.barWidth}px`;
+  } else {
+    panel.style.left = `${Math.max(0, vw - barContext.barWidth - panelWidth)}px`;
+  }
+}
+
 export function attachDropdown(
   anchor: HTMLElement,
   panel: HTMLElement,
@@ -73,11 +120,7 @@ export function attachDropdown(
     if (openAnchor && openAnchor !== anchor) {
       openAnchor.setAttribute('aria-expanded', 'false');
     }
-    const rect = anchor.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const panelWidth = panel.offsetWidth || 220;
-    const left = Math.min(rect.left, viewportWidth - panelWidth - 4);
-    panel.style.left = `${Math.max(0, left)}px`;
+    positionPanel(anchor, panel);
     panel.classList.add('open');
     anchor.setAttribute('aria-expanded', 'true');
     openDropdown = panel;

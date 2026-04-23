@@ -4,7 +4,9 @@ const KEYS: (keyof StoredState)[] = [
   'rawYaml',
   'config',
   'displayMode',
+  'barPosition',
   'barHeight',
+  'barWidth',
   'autoHide',
   'schemaVersion',
 ];

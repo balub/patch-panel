@@ -45,21 +45,33 @@
       </section>
 
       <section>
+        <h2>Bar position</h2>
+        <p class="hint">Choose which edge of the browser the bar attaches to.</p>
+        <div class="mode-group">
+          <label><input type="radio" name="position" value="top" /> Top</label>
+          <label><input type="radio" name="position" value="left" /> Left</label>
+          <label><input type="radio" name="position" value="right" /> Right</label>
+        </div>
+      </section>
+
+      <section>
         <h2>Bar appearance</h2>
         <div class="control">
-          <label for="bar-height">Bar height</label>
+          <label for="bar-thickness" id="bar-thickness-label">Bar height</label>
           <div class="slider-row">
-            <input type="range" id="bar-height" min="20" max="60" step="1" />
-            <span id="bar-height-value" class="slider-value">30 px</span>
+            <input type="range" id="bar-thickness" step="1" />
+            <span id="bar-thickness-value" class="slider-value">30 px</span>
           </div>
-          <p class="hint">Between 20 and 60 pixels. Dropdowns align automatically.</p>
+          <p class="hint" id="bar-thickness-hint">
+            Between 20 and 60 pixels. Dropdowns align automatically.
+          </p>
         </div>
         <div class="control">
           <label class="checkbox-row">
             <input type="checkbox" id="auto-hide" />
             <span>Auto-hide the bar</span>
           </label>
-          <p class="hint">
+          <p class="hint" id="auto-hide-hint">
             Hide the bar off-screen until the cursor nears the top edge.
           </p>
         </div>

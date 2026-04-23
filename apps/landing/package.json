@@ -1,0 +1,10 @@
+{
+  "name": "landing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Landing page for Patch Panel.",
+  "scripts": {
+    "dev": "python3 -m http.server 4321",
+    "build": "echo 'static — nothing to build'"
+  }
+}

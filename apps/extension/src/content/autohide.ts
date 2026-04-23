@@ -1,10 +1,13 @@
+import type { BarPosition } from '../shared/types';
+
 const TRIGGER_ZONE_PX = 5;
 const EXIT_BUFFER_PX = 40;
 const HIDE_DELAY_MS = 300;
 
 let enabled = false;
 let hostEl: HTMLElement | null = null;
-let barHeightPx = 30;
+let position: BarPosition = 'top';
+let barThicknessPx = 30;
 let hideTimer: number | null = null;
 let listenersInstalled = false;
 
@@ -20,10 +23,22 @@ function scheduleHide() {
   hideTimer = window.setTimeout(() => setHidden(true), HIDE_DELAY_MS);
 }
 
+function hiddenTransform(): string {
+  switch (position) {
+    case 'left':
+      return 'translateX(-100%)';
+    case 'right':
+      return 'translateX(100%)';
+    case 'top':
+    default:
+      return 'translateY(-100%)';
+  }
+}
+
 function setHidden(hidden: boolean) {
   if (!hostEl) return;
   if (hidden) {
-    hostEl.style.setProperty('transform', 'translateY(-100%)', 'important');
+    hostEl.style.setProperty('transform', hiddenTransform(), 'important');
   } else {
     hostEl.style.setProperty('transform', 'none', 'important');
   }
@@ -31,12 +46,28 @@ function setHidden(hidden: boolean) {
 
 function onMouseMove(e: MouseEvent) {
   if (!enabled || !hostEl) return;
-  const exitZone = barHeightPx + EXIT_BUFFER_PX;
   const overHost = e.target === hostEl;
-  if (e.clientY <= TRIGGER_ZONE_PX || overHost) {
+  const exitZone = barThicknessPx + EXIT_BUFFER_PX;
+  const vw = window.innerWidth;
+
+  let nearEdge = false;
+  let pastExit = false;
+
+  if (position === 'top') {
+    nearEdge = e.clientY <= TRIGGER_ZONE_PX;
+    pastExit = e.clientY > exitZone;
+  } else if (position === 'left') {
+    nearEdge = e.clientX <= TRIGGER_ZONE_PX;
+    pastExit = e.clientX > exitZone;
+  } else {
+    nearEdge = e.clientX >= vw - TRIGGER_ZONE_PX;
+    pastExit = e.clientX < vw - exitZone;
+  }
+
+  if (nearEdge || overHost) {
     cancelHide();
     setHidden(false);
-  } else if (e.clientY > exitZone) {
+  } else if (pastExit) {
     scheduleHide();
   }
 }
@@ -55,11 +86,17 @@ function installListeners() {
 
 export function configureAutoHide(
   host: HTMLElement,
-  opts: { enabled: boolean; barHeight: number },
+  opts: {
+    enabled: boolean;
+    position: BarPosition;
+    barHeight: number;
+    barWidth: number;
+  },
 ) {
   hostEl = host;
   enabled = opts.enabled;
-  barHeightPx = opts.barHeight;
+  position = opts.position;
+  barThicknessPx = position === 'top' ? opts.barHeight : opts.barWidth;
   installListeners();
   cancelHide();
   setHidden(enabled);
