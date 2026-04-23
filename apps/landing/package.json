@@ -4,7 +4,13 @@
   "private": true,
   "description": "Landing page for Patch Panel.",
   "scripts": {
-    "dev": "python3 -m http.server 4321",
-    "build": "echo 'static — nothing to build'"
+    "dev": "python3 -m http.server 4321 -d public",
+    "build": "echo 'static — nothing to build'",
+    "cf:deploy": "wrangler pages deploy",
+    "cf:deploy:preview": "wrangler pages deploy --branch=preview",
+    "cf:tail": "wrangler pages deployment tail"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
   }
 }

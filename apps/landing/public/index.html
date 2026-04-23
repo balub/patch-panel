@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Patch Panel — your homelab, one click away</title>
+    <meta
+      name="description"
+      content="A YAML-driven, bookmarks-bar-style launcher for the services you already host."
+    />
+    <link rel="icon" type="image/png" href="icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <header class="mark">
+        <span class="mark__dot" aria-hidden="true"></span>
+        <span class="mark__name">patch&nbsp;panel</span>
+        <span class="mark__ver">v0.1.0</span>
+      </header>
+
+      <section class="hero">
+        <h1>
+          Your homelab,
+          <br />
+          <em>always one&nbsp;click away.</em>
+        </h1>
+
+        <p class="sub">
+          A thin bar that lives on top of every page. Describe your services in a
+          single <span class="mono">YAML</span> file — Patch Panel reads from it.
+        </p>
+
+        <div class="cta">
+          <a
+            class="btn btn--primary"
+            href="https://chromewebstore.google.com/"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg
+              class="btn__icon"
+              viewBox="0 0 48 48"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle cx="24" cy="24" r="20" fill="currentColor" opacity="0.12" />
+              <circle cx="24" cy="24" r="8" fill="currentColor" />
+              <path
+                d="M24 4 a20 20 0 0 1 17.32 10 H24 a10 10 0 0 0 -8.66 5 z"
+                fill="currentColor"
+                opacity="0.5"
+              />
+              <path
+                d="M41.32 14 a20 20 0 0 1 -8.66 27.32 L24 24 a10 10 0 0 0 8.66 -5 z"
+                fill="currentColor"
+                opacity="0.75"
+              />
+            </svg>
+            <span>Install for Chrome</span>
+            <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+
+          <a
+            class="btn btn--ghost"
+            href="https://github.com/balu-/patch-panel"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg
+              class="btn__icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                fill="currentColor"
+                d="M12 .5C5.73.5.64 5.59.64 11.86c0 5.02 3.26 9.28 7.77 10.78.57.1.78-.25.78-.55 0-.27-.01-1-.02-1.96-3.17.69-3.83-1.52-3.83-1.52-.52-1.31-1.27-1.66-1.27-1.66-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.24 3.32.95.1-.74.4-1.25.72-1.54-2.53-.29-5.19-1.27-5.19-5.63 0-1.24.44-2.26 1.17-3.06-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.71 0c2.18-1.48 3.14-1.17 3.14-1.17.62 1.57.23 2.73.11 3.02.73.8 1.17 1.82 1.17 3.06 0 4.38-2.67 5.33-5.21 5.62.41.35.77 1.04.77 2.1 0 1.52-.01 2.75-.01 3.13 0 .3.2.66.79.54 4.51-1.5 7.76-5.76 7.76-10.78C23.36 5.59 18.27.5 12 .5z"
+              />
+            </svg>
+            <span>View on GitHub</span>
+          </a>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <span>MIT licensed</span>
+        <span class="foot__sep" aria-hidden="true">·</span>
+        <span>local&#8209;first, no cloud</span>
+        <span class="foot__sep" aria-hidden="true">·</span>
+        <span>made in a homelab</span>
+      </footer>
+    </main>
+  </body>
+</html>

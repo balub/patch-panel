@@ -1,0 +1,12 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: interest-cohort=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+/style.css
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/icon.png
+  Cache-Control: public, max-age=86400
