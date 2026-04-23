@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Patch Panel",
+  "version": "0.1.0",
+  "description": "A YAML-driven bookmarks-bar-style launcher for homelab services.",
+  "permissions": ["storage"],
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["src/content/index.ts"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "options_ui": {
+    "page": "src/options/index.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "Patch Panel"
+  }
+}
