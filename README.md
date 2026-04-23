@@ -8,7 +8,7 @@ Patch Panel is a Chrome extension that injects a thin bar across the top of ever
 
 ## Why
 
-I wanted a lightweight alternative to the usual homelab dashboards like [Homer](https://github.com/bastienwirtz/homer) and [Dashy](https://github.com/Lissy93/dashy). They're great, but they take over an entire tab — opening a service means first going to your dashboard, then clicking through. I wanted the configurability of a YAML-driven dashboard without having to dedicate a whole tab to it. Patch Panel lives as a thin bar on top of whatever page you're already on, so your homelab is always one click away.
+I wanted a lightweight alternative to the usual homelab dashboards like [Homer](https://github.com/bastienwirtz/homer) and [Dashy](https://github.com/Lissy93/dashy). They're great, but they take over an entire tab. I wanted the configurability of a YAML-driven dashboard without having to dedicate a whole tab to it. Patch Panel lives as a thin bar on top of whatever page you're already on, so your self-hosted services are always one click away.
 
 ## Repository layout
 
