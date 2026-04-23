@@ -25,6 +25,9 @@ export function closeAll() {
   if (openDropdown) {
     openDropdown.classList.remove('open');
     openDropdown = null;
+  }
+  if (openAnchor) {
+    openAnchor.setAttribute('aria-expanded', 'false');
     openAnchor = null;
   }
 }
@@ -59,17 +62,24 @@ export function attachDropdown(
   registerGlobalHandlers();
   shadow.appendChild(panel);
 
+  anchor.setAttribute('aria-expanded', 'false');
+  anchor.setAttribute('aria-haspopup', 'menu');
+
   const open = () => {
     cancelClose();
     if (openDropdown && openDropdown !== panel) {
       openDropdown.classList.remove('open');
     }
+    if (openAnchor && openAnchor !== anchor) {
+      openAnchor.setAttribute('aria-expanded', 'false');
+    }
     const rect = anchor.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
-    const panelWidth = panel.offsetWidth || 200;
+    const panelWidth = panel.offsetWidth || 220;
     const left = Math.min(rect.left, viewportWidth - panelWidth - 4);
     panel.style.left = `${Math.max(0, left)}px`;
     panel.classList.add('open');
+    anchor.setAttribute('aria-expanded', 'true');
     openDropdown = panel;
     openAnchor = anchor;
   };
