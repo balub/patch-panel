@@ -1,5 +1,7 @@
 # Patch Panel
 
+![Patch Panel demo](./Cap%202026-04-24%20at%2000.11.08.gif)
+
 A YAML-driven, bookmarks-bar-style launcher for homelab services.
 
 Patch Panel is a Chrome extension that injects a thin bar across the top of every page, giving you one-click access to your self-hosted services. You describe your homelab in a single YAML file — services, groups, icons — and the bar renders from it.
