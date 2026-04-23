@@ -79,8 +79,51 @@
 .bar[data-mode='icon_only'] .item { max-width: none; }
 .bar[data-mode='text_only'] .icon { display: none; }
 
+.group {
+  position: relative;
+}
+
+.caret {
+  margin-left: 2px;
+  opacity: 0.6;
+  font-size: 9px;
+}
+
+.bar[data-mode='icon_only'] .caret { display: none; }
+
+.dropdown {
+  position: fixed;
+  top: 30px;
+  left: 0;
+  min-width: 180px;
+  max-width: 320px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #bdbdbd;
+  border-top: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  padding: 4px 0;
+  display: none;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.dropdown.open { display: flex; }
+
+.dropdown .item {
+  max-width: none;
+  height: 30px;
+  padding: 0 12px;
+}
+
 @media (prefers-color-scheme: dark) {
   .bar { background: #2a2a2a; border-bottom-color: #1a1a1a; color: #eee; }
   .item:hover { background: rgba(255, 255, 255, 0.08); }
   .icon.fallback { background: #555; }
+  .dropdown {
+    background: #2a2a2a;
+    border-color: #1a1a1a;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
 }

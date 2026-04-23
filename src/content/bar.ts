@@ -1,5 +1,7 @@
 import type { DisplayMode, NormalizedConfig } from '../shared/types';
 import { renderServiceItem } from './item';
+import { renderGroupItem } from './group';
+import { closeAll as closeAllDropdowns } from './dropdown';
 import barCss from './bar.css?inline';
 
 const HOST_ID = 'patch-panel-host';
@@ -37,6 +39,8 @@ function getOrCreateHost(): { host: HTMLElement; shadow: ShadowRoot } {
 }
 
 export function renderBar(config: NormalizedConfig, mode: DisplayMode) {
+  closeAllDropdowns();
+
   const { shadow } = getOrCreateHost();
   shadow.innerHTML = '';
 
@@ -51,6 +55,8 @@ export function renderBar(config: NormalizedConfig, mode: DisplayMode) {
   for (const item of config.items) {
     if (item.type === 'service') {
       bar.appendChild(renderServiceItem(item));
+    } else {
+      bar.appendChild(renderGroupItem(item, shadow));
     }
   }
 
@@ -58,6 +64,7 @@ export function renderBar(config: NormalizedConfig, mode: DisplayMode) {
 }
 
 export function unmountBar() {
+  closeAllDropdowns();
   const host = document.getElementById(HOST_ID);
   if (host) host.remove();
 }
