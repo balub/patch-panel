@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Patch Panel — Options</title>
+    <link rel="stylesheet" href="./options.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Patch Panel</h1>
+        <p class="subtitle">A YAML-driven bookmarks bar for homelab services.</p>
+      </header>
+
+      <section>
+        <h2>Upload configuration</h2>
+        <p class="hint">
+          Select a YAML file to configure the bar. The file is parsed locally
+          and never sent anywhere.
+        </p>
+        <input
+          type="file"
+          id="yaml-file"
+          accept=".yaml,.yml,text/yaml,application/x-yaml"
+        />
+        <div id="status" role="status"></div>
+      </section>
+
+      <section>
+        <h2>Display mode</h2>
+        <p class="hint">Controls how items are rendered in the bar.</p>
+        <div class="mode-group">
+          <label><input type="radio" name="mode" value="icon_only" /> Icon only</label>
+          <label><input type="radio" name="mode" value="icon_text" /> Icon + text</label>
+          <label><input type="radio" name="mode" value="text_only" /> Text only</label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Current configuration</h2>
+        <pre id="current-yaml">No configuration uploaded yet.</pre>
+      </section>
+    </main>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>

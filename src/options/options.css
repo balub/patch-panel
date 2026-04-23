@@ -1,0 +1,112 @@
+:root {
+  color-scheme: light dark;
+  --fg: #222;
+  --fg-muted: #666;
+  --bg: #fff;
+  --bg-muted: #f4f4f4;
+  --border: #d0d0d0;
+  --accent: #0a7d2c;
+  --error: #c8382f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #eee;
+    --fg-muted: #aaa;
+    --bg: #1b1b1b;
+    --bg-muted: #252525;
+    --border: #333;
+    --accent: #54d07a;
+    --error: #ff6b63;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+header { margin-bottom: 2rem; }
+
+h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 0.95rem;
+}
+
+section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+section:last-of-type { border-bottom: none; }
+
+section h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.hint {
+  margin: 0 0 0.75rem 0;
+  color: var(--fg-muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+input[type='file'] { font-size: 0.875rem; }
+
+#status {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  min-height: 1.2em;
+}
+
+#status.success { color: var(--accent); }
+#status.error { color: var(--error); }
+
+.mode-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mode-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+#current-yaml {
+  background: var(--bg-muted);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  max-height: 280px;
+  overflow: auto;
+  white-space: pre-wrap;
+  margin: 0;
+}
