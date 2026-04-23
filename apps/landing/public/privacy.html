@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy — Patch Panel</title>
+    <meta
+      name="description"
+      content="Patch Panel privacy policy. Local-first, no telemetry, no accounts."
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="icon" type="image/png" href="icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="doc">
+    <main class="doc__main">
+      <nav class="doc__nav">
+        <a class="doc__back" href="/">
+          <span aria-hidden="true">&larr;</span>
+          <span>patch&nbsp;panel</span>
+        </a>
+        <span class="doc__meta">v0.1.0 &middot; updated 24&nbsp;Apr&nbsp;2026</span>
+      </nav>
+
+      <header class="doc__head">
+        <p class="doc__kicker">Privacy</p>
+        <h1 class="doc__title">
+          What we <em>do</em> and <em>don&rsquo;t</em> know about you.
+        </h1>
+        <p class="doc__lede">
+          Short version: nothing. Patch Panel runs entirely on your own device,
+          makes no network calls of its own, and has no analytics or accounts.
+          The longer version is below — you should still read it.
+        </p>
+      </header>
+
+      <section class="doc__body">
+        <h2>What Patch Panel stores</h2>
+        <p>
+          Your YAML configuration and a handful of display settings — bar
+          position, height, width, display mode, auto&#8209;hide toggle, and a
+          schema version marker. That&rsquo;s it.
+        </p>
+        <p>
+          All of it lives in <code>chrome.storage.local</code> on the same
+          device you installed the extension on. Patch Panel does not use
+          <code>chrome.storage.sync</code>, so the data is never synced through
+          your Google account. Nothing is ever uploaded to a server by the
+          extension.
+        </p>
+
+        <h2>What Patch Panel accesses</h2>
+        <p>
+          Patch Panel runs a small content script on every
+          <code>http://</code> and <code>https://</code> page so it can draw a
+          bar on top of the page. The content script only renders its own UI.
+          It does not read, log, or transmit the contents of the pages you
+          visit, nor does it look at your browsing history, tabs, cookies,
+          form data, or anything else on the page.
+        </p>
+        <p>
+          The extension requests exactly one permission:
+          <code>storage</code>. There are no host permissions, no
+          <code>tabs</code> permission, no <code>cookies</code> permission.
+        </p>
+
+        <h2>Third-party requests</h2>
+        <p>
+          Patch Panel itself makes no network requests &mdash; it never phones
+          home and never contacts any server under our control.
+        </p>
+        <p>
+          However, your YAML config can include <code>icon</code> URLs for each
+          service. Those icons render as ordinary <code>&lt;img&gt;</code> tags
+          in the bar, which means your browser will fetch them from whatever
+          URL you wrote.
+        </p>
+        <p>
+          If you point icons at your own self-hosted images, those requests
+          never leave your network. If you use a third-party favicon service
+          like <code>https://www.google.com/s2/favicons?domain=&hellip;</code>,
+          then your browser contacts that service directly and it learns the
+          domains you looked up, subject to its own privacy policy. This is
+          your choice; you can avoid it by self&#8209;hosting icons or by
+          omitting <code>icon</code> from your config entirely.
+        </p>
+
+        <h2>Analytics, tracking, and telemetry</h2>
+        <p>
+          None. There is no analytics SDK, no crash reporter, no error tracker,
+          no A/B test framework, no ad network, no fingerprinting &mdash; of any
+          kind.
+        </p>
+
+        <h2>Your data, your device</h2>
+        <p>
+          Because everything lives in your browser&rsquo;s extension storage,
+          uninstalling Patch Panel from Chrome removes all of it. There is no
+          cloud account, no server-side record, and nothing for us to delete on
+          your behalf &mdash; because we never had any of it in the first place.
+        </p>
+        <p>
+          You can also inspect and edit the full stored state at any time from
+          the extension&rsquo;s Options page.
+        </p>
+
+        <h2>Changes</h2>
+        <p>
+          If this policy ever changes, the new version will ship in the next
+          release of the extension and the &ldquo;updated&rdquo; date at the
+          top of this page will move. The change history lives in
+          <a
+            href="https://github.com/balu-/patch-panel/commits/main/apps/landing/public/privacy.html"
+            rel="noopener"
+            target="_blank"
+            >the Git history</a
+          >
+          &mdash; diffs only, no rewrites.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          Questions, concerns, or something that doesn&rsquo;t match what
+          you&rsquo;re seeing? Open an issue at
+          <a
+            href="https://github.com/balu-/patch-panel/issues"
+            rel="noopener"
+            target="_blank"
+            >github.com/balu&#8209;/patch&#8209;panel</a
+          >.
+        </p>
+      </section>
+
+      <footer class="doc__foot">
+        <span>MIT licensed</span>
+        <span aria-hidden="true">&middot;</span>
+        <span>local&#8209;first, no cloud</span>
+        <span aria-hidden="true">&middot;</span>
+        <a href="/">&larr; back home</a>
+      </footer>
+    </main>
+  </body>
+</html>
