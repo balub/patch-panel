@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "python3 -m http.server 4321 -d public",
     "build": "echo 'static — nothing to build'",
-    "cf:deploy": "wrangler pages deploy",
-    "cf:deploy:preview": "wrangler pages deploy --branch=preview",
+    "cf:deploy": "wrangler pages deploy public",
+    "cf:deploy:preview": "wrangler pages deploy public --branch=preview",
     "cf:tail": "wrangler pages deployment tail"
   },
   "devDependencies": {
