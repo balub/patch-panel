@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Patch Panel",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A YAML-driven bookmarks-bar-style launcher for homelab services.",
   "icons": {
     "16": "icons/icon16.png",
