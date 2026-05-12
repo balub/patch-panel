@@ -2,8 +2,12 @@ import type { BarPosition, DisplayMode, NormalizedConfig } from '../shared/types
 import { BAR_HEIGHT_DEFAULT, BAR_WIDTH_DEFAULT } from '../shared/types';
 import { renderServiceItem } from './item';
 import { renderGroupItem } from './group';
+import { renderMonitorValue, handleMonitorLatestChange } from './monitor-value';
+import { renderMonitorGraph, handleMonitorReadingsChange } from './monitor-graph';
+import { isMonitorLatestKey, isMonitorReadingsKey } from '../shared/monitor-storage';
 import { closeAll as closeAllDropdowns, setBarContext } from './dropdown';
 import { configureAutoHide } from './autohide';
+import type { MetricSnapshot } from '../adapters/types';
 import barCss from './bar.css?inline';
 
 const HOST_ID = 'patch-panel-host';
@@ -93,10 +97,16 @@ function renderCogButton(): HTMLButtonElement {
   btn.setAttribute('aria-label', 'Open Patch Panel settings');
   btn.textContent = '⚙';
   btn.addEventListener('click', () => {
-    void chrome.runtime.sendMessage({ type: 'OPEN_OPTIONS' });
+    try {
+      void chrome.runtime.sendMessage({ type: 'OPEN_OPTIONS' });
+    } catch {
+      // Extension context invalidated after reload — nothing to do until page refreshes.
+    }
   });
   return btn;
 }
+
+let activeShadow: ShadowRoot | null = null;
 
 export function renderBar(opts: BarOptions) {
   closeAllDropdowns();
@@ -105,6 +115,7 @@ export function renderBar(opts: BarOptions) {
   const widthPx = opts.barWidth || BAR_WIDTH_DEFAULT;
   const { host, shadow } = getOrCreateHost(opts.position, heightPx, widthPx);
   shadow.innerHTML = '';
+  activeShadow = shadow;
 
   const style = document.createElement('style');
   style.textContent = barCss;
@@ -118,13 +129,16 @@ export function renderBar(opts: BarOptions) {
   for (const item of opts.config.items) {
     if (item.type === 'service') {
       bar.appendChild(renderServiceItem(item));
-    } else {
+    } else if (item.type === 'group') {
       bar.appendChild(renderGroupItem(item, shadow));
+    } else if (item.type === 'monitor-value') {
+      bar.appendChild(renderMonitorValue(item));
+    } else if (item.type === 'monitor-graph') {
+      bar.appendChild(renderMonitorGraph(item));
     }
   }
 
   bar.appendChild(renderCogButton());
-
   shadow.appendChild(bar);
 
   setBarContext({
@@ -143,6 +157,19 @@ export function renderBar(opts: BarOptions) {
 
 export function unmountBar() {
   closeAllDropdowns();
+  activeShadow = null;
   const host = document.getElementById(HOST_ID);
   if (host) host.remove();
+}
+
+export function handleMonitorStorageChange(
+  key: string,
+  newValue: unknown,
+): void {
+  if (!activeShadow) return;
+  if (isMonitorLatestKey(key)) {
+    handleMonitorLatestChange(key, newValue as MetricSnapshot, activeShadow);
+  } else if (isMonitorReadingsKey(key)) {
+    handleMonitorReadingsChange(key, newValue as MetricSnapshot[], activeShadow);
+  }
 }

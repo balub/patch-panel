@@ -1,0 +1,59 @@
+<h2>Revised Architecture: Follow the Homarr Standard</h2>
+<p class="subtitle">Your extension talks to Dash. / Glances — just like Homarr does. Pick where the aggregation lives.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Extension-as-Aggregator ✦ Recommended</h3>
+      <p>No server needed. The extension's background service worker polls Dash./Glances directly. Readings cached in <code>chrome.storage.local</code> for sparklines.</p>
+      <div style="font-family:monospace;font-size:12px;background:#1a1a2e;color:#a0c4ff;padding:10px;border-radius:6px;margin-top:8px;line-height:1.8">
+        ┌─────────────────────────────────────────┐<br>
+        │ patch-panel Extension (background SW)   │<br>
+        │                                         │<br>
+        │  poll /load/cpu, /load/gpu, /info...     │<br>
+        │  ↓                  ↓               ↓   │<br>
+        │ [Dash. :3001]  [Glances :61208]  [...]  │<br>
+        │  Machine A      Machine B        etc.   │<br>
+        │                                         │<br>
+        │  ring buffer → chrome.storage.local      │<br>
+        │  (60 readings × N machines × M metrics) │<br>
+        └─────────────────────────────────────────┘
+      </div>
+      <div class="pros-cons" style="margin-top:10px">
+        <div class="pros"><h4>Pros</h4><ul><li>Zero server to run or maintain</li><li>Machines stay purely local</li><li>Works offline (cached values)</li><li>Config lives in existing YAML</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Browser must be on same network</li><li>Extension must stay open to poll</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Thin Hub Server</h3>
+      <p>A small Node.js server (new workspace in monorepo) polls Dash./Glances, buffers history, exposes one API. Extension talks only to the hub — same network not required.</p>
+      <div style="font-family:monospace;font-size:12px;background:#1a1a2e;color:#a0c4ff;padding:10px;border-radius:6px;margin-top:8px;line-height:1.8">
+        [Dash. :3001]  Machine A  ──pull──┐<br>
+        [Glances :61208] Machine B ─pull──┤ Hub (apps/monitor)<br>
+        [Glances] Machine C ────────pull──┘  └─ ring buffer (memory)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ REST API<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extension polls Hub
+      </div>
+      <div class="pros-cons" style="margin-top:10px">
+        <div class="pros"><h4>Pros</h4><ul><li>Works from any network / device</li><li>History persists even when browser closed</li><li>One endpoint for the extension</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Must run &amp; maintain a server process</li><li>Extra infra for a homelab tool</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px;padding:16px;background:#0d1117;border-radius:8px;border:1px solid #30363d">
+  <p class="label">In both cases, the config looks the same in your YAML:</p>
+  <pre style="color:#7ee787;font-size:12px;margin:8px 0 0">monitors:
+  - name: "Mac Studio"
+    type: dashdot
+    url: "http://192.168.1.10:3001"
+  - name: "NAS"
+    type: glances
+    url: "http://192.168.1.20:61208"</pre>
+</div>

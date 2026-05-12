@@ -5,7 +5,8 @@ import {
   BAR_POSITION_DEFAULT,
   BAR_WIDTH_DEFAULT,
 } from '../shared/types';
-import { renderBar, unmountBar } from './bar';
+import { renderBar, unmountBar, handleMonitorStorageChange } from './bar';
+import { isMonitorLatestKey, isMonitorReadingsKey } from '../shared/monitor-storage';
 
 function apply(state: StoredState) {
   if (state.config && state.config.items.length > 0) {
@@ -21,6 +22,16 @@ function apply(state: StoredState) {
     unmountBar();
   }
 }
+
+// In-place update for monitor data — no full bar re-render
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'local') return;
+  for (const [key, change] of Object.entries(changes)) {
+    if (isMonitorLatestKey(key) || isMonitorReadingsKey(key)) {
+      handleMonitorStorageChange(key, change.newValue);
+    }
+  }
+});
 
 async function init() {
   const state = await getState();

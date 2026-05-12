@@ -9,7 +9,8 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "permissions": ["storage"],
+  "permissions": ["storage", "alarms"],
+  "host_permissions": ["http://*/*", "https://*/*"],
   "background": {
     "service_worker": "src/background/index.ts",
     "type": "module"

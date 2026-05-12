@@ -1,0 +1,59 @@
+<h2>How should metrics flow through the system?</h2>
+<p class="subtitle">Three architectural approaches — pick the one that fits your goals</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Pull Chain (Simplest)</h3>
+      <p>Each agent exposes a local HTTP API. The central hub periodically pulls from all agents. The extension polls the hub.</p>
+      <div style="font-family:monospace;font-size:12px;background:#1a1a2e;color:#a0c4ff;padding:10px;border-radius:6px;margin-top:8px;line-height:1.6">
+        [Machine A Agent :8080] ←poll─┐<br>
+        [Machine B Agent :8080] ←poll─┤ Central Hub<br>
+        [Machine C Agent :8080] ←poll─┘      ↑<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poll every N sec<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chrome Extension
+      </div>
+      <div class="pros-cons" style="margin-top:10px">
+        <div class="pros"><h4>Pros</h4><ul><li>Simple to implement</li><li>Agents need no outbound config</li><li>Easy to debug</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Hub must reach all agents (same network)</li><li>Not great for agents behind NAT</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Push + SSE ✦ Recommended</h3>
+      <p>Agents push metrics to the hub on a configurable interval. Hub streams updates to the Chrome extension via Server-Sent Events (SSE).</p>
+      <div style="font-family:monospace;font-size:12px;background:#1a1a2e;color:#a0c4ff;padding:10px;border-radius:6px;margin-top:8px;line-height:1.6">
+        [Machine A] ──push──┐<br>
+        [Machine B] ──push──┤ Central Hub ──SSE stream──→ Extension<br>
+        [Machine C] ──push──┘ (ring buffer, 1hr history)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;configurable push interval
+      </div>
+      <div class="pros-cons" style="margin-top:10px">
+        <div class="pros"><h4>Pros</h4><ul><li>Works across NAT (agents initiate)</li><li>SSE is browser-native — no WebSocket complexity</li><li>Near-real-time feel in extension</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Hub must be reachable by agents</li><li>Extension holds open SSE connection</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>WebSocket Mesh</h3>
+      <p>Agents and the extension all maintain persistent WebSocket connections to the hub. Hub fans out metrics to all connected clients in real time.</p>
+      <div style="font-family:monospace;font-size:12px;background:#1a1a2e;color:#a0c4ff;padding:10px;border-radius:6px;margin-top:8px;line-height:1.6">
+        [Machine A] ←──WS──┐<br>
+        [Machine B] ←──WS──┤ Central Hub ←──WS──→ Extension<br>
+        [Machine C] ←──WS──┘ (can request on-demand updates)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bi-directional, true real-time
+      </div>
+      <div class="pros-cons" style="margin-top:10px">
+        <div class="pros"><h4>Pros</h4><ul><li>Truly real-time, sub-second updates</li><li>Hub can push commands to agents</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>More complex to implement</li><li>Reconnect logic needed on both sides</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>

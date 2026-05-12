@@ -1,0 +1,126 @@
+<h2>How monitors look in the bar</h2>
+<p class="subtitle">Two modes — both configured in your existing YAML. Click either card to select.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="single" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:16px;background:#0d1117">
+      <!-- Bar mockup: single monitor item -->
+      <div style="background:#161b22;border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:16px;font-size:12px;border:1px solid #30363d">
+        <span style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:1px">Proxmox</span>
+        <span style="color:#58a6ff">|</span>
+        <span style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:1px">Portainer</span>
+        <span style="color:#58a6ff">|</span>
+        <!-- Monitor item inline in bar -->
+        <span style="background:#21262d;border-radius:6px;padding:4px 10px;display:flex;align-items:center;gap:8px;border:1px solid #388bfd44">
+          <span style="color:#cdd9e5;font-size:11px;font-weight:600">Mac Studio</span>
+          <span style="color:#3fb950;font-size:11px">CPU <b>34%</b></span>
+          <span style="color:#d2a8ff;font-size:11px">RAM <b>61%</b></span>
+          <span style="color:#79c0ff;font-size:11px">↑2.1 ↓8.4 MB/s</span>
+        </span>
+        <span style="color:#58a6ff">|</span>
+        <span style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:1px">Vaultwarden</span>
+      </div>
+      <!-- Expanded popover on click -->
+      <div style="margin-top:8px;background:#161b22;border-radius:8px;padding:12px;border:1px solid #388bfd;font-size:11px;max-width:320px">
+        <div style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Mac Studio — Dash.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:#21262d;border-radius:6px;padding:8px">
+            <div style="color:#8b949e;font-size:9px;text-transform:uppercase;margin-bottom:4px">CPU</div>
+            <div style="color:#3fb950;font-size:16px;font-weight:700">34%</div>
+            <div style="height:20px;background:#0d1117;border-radius:3px;margin-top:4px;overflow:hidden;display:flex;align-items:flex-end;gap:1px;padding:2px">
+              <div style="flex:1;background:#3fb95066;height:40%"></div><div style="flex:1;background:#3fb95066;height:55%"></div><div style="flex:1;background:#3fb95066;height:48%"></div><div style="flex:1;background:#3fb95066;height:62%"></div><div style="flex:1;background:#3fb95066;height:70%"></div><div style="flex:1;background:#3fb95066;height:34%"></div><div style="flex:1;background:#3fb950;height:34%"></div>
+            </div>
+          </div>
+          <div style="background:#21262d;border-radius:6px;padding:8px">
+            <div style="color:#8b949e;font-size:9px;text-transform:uppercase;margin-bottom:4px">RAM</div>
+            <div style="color:#d2a8ff;font-size:16px;font-weight:700">61%</div>
+            <div style="height:20px;background:#0d1117;border-radius:3px;margin-top:4px;overflow:hidden;display:flex;align-items:flex-end;gap:1px;padding:2px">
+              <div style="flex:1;background:#d2a8ff66;height:58%"></div><div style="flex:1;background:#d2a8ff66;height:59%"></div><div style="flex:1;background:#d2a8ff66;height:60%"></div><div style="flex:1;background:#d2a8ff66;height:61%"></div><div style="flex:1;background:#d2a8ff66;height:60%"></div><div style="flex:1;background:#d2a8ff66;height:62%"></div><div style="flex:1;background:#d2a8ff;height:61%"></div>
+            </div>
+          </div>
+          <div style="background:#21262d;border-radius:6px;padding:8px">
+            <div style="color:#8b949e;font-size:9px;text-transform:uppercase;margin-bottom:4px">GPU</div>
+            <div style="color:#f78166;font-size:16px;font-weight:700">12%</div>
+            <div style="height:20px;background:#0d1117;border-radius:3px;margin-top:4px;overflow:hidden;display:flex;align-items:flex-end;gap:1px;padding:2px">
+              <div style="flex:1;background:#f7816666;height:20%"></div><div style="flex:1;background:#f7816666;height:18%"></div><div style="flex:1;background:#f7816666;height:22%"></div><div style="flex:1;background:#f7816666;height:14%"></div><div style="flex:1;background:#f7816666;height:10%"></div><div style="flex:1;background:#f7816666;height:15%"></div><div style="flex:1;background:#f78166;height:12%"></div>
+            </div>
+          </div>
+          <div style="background:#21262d;border-radius:6px;padding:8px">
+            <div style="color:#8b949e;font-size:9px;text-transform:uppercase;margin-bottom:4px">Network</div>
+            <div style="color:#79c0ff;font-size:13px;font-weight:700">↑2.1 ↓8.4</div>
+            <div style="color:#8b949e;font-size:9px">MB/s</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Single monitor item</h3>
+      <p>Bar shows live key values inline. Clicking expands a popover with all metrics + sparklines.</p>
+      <pre style="font-size:10px;color:#7ee787;margin-top:8px">- type: monitor
+  name: Mac Studio
+  adapter: dashdot
+  url: http://192.168.1.10:3001
+  interval: 10</pre>
+    </div>
+  </div>
+
+  <div class="card" data-choice="group" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:16px;background:#0d1117">
+      <!-- Bar mockup: group with monitors -->
+      <div style="background:#161b22;border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:16px;font-size:12px;border:1px solid #30363d">
+        <span style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:1px">Proxmox</span>
+        <span style="color:#58a6ff">|</span>
+        <span style="background:#21262d;border-radius:6px;padding:4px 10px;display:flex;align-items:center;gap:6px;border:1px solid #388bfd44">
+          <span style="color:#cdd9e5;font-size:11px;font-weight:600">⬡ Servers ▾</span>
+        </span>
+        <span style="color:#58a6ff">|</span>
+        <span style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:1px">Vaultwarden</span>
+      </div>
+      <!-- Dropdown showing multiple machines -->
+      <div style="margin-top:8px;background:#161b22;border-radius:8px;padding:12px;border:1px solid #388bfd;font-size:11px">
+        <div style="color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Servers</div>
+        <!-- Machine 1 -->
+        <div style="background:#21262d;border-radius:6px;padding:10px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="color:#cdd9e5;font-weight:600">Mac Studio</span>
+            <span style="color:#8b949e;font-size:9px">Dash. • 5s ago</span>
+          </div>
+          <div style="display:flex;gap:12px">
+            <span style="color:#3fb950">CPU <b>34%</b></span>
+            <span style="color:#d2a8ff">RAM <b>61%</b></span>
+            <span style="color:#f78166">GPU <b>12%</b></span>
+          </div>
+        </div>
+        <!-- Machine 2 -->
+        <div style="background:#21262d;border-radius:6px;padding:10px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="color:#cdd9e5;font-weight:600">NAS</span>
+            <span style="color:#8b949e;font-size:9px">Glances • 3s ago</span>
+          </div>
+          <div style="display:flex;gap:12px">
+            <span style="color:#3fb950">CPU <b>8%</b></span>
+            <span style="color:#d2a8ff">RAM <b>22%</b></span>
+            <span style="color:#79c0ff">↑0.3 ↓1.2 MB/s</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Group of monitors</h3>
+      <p>A named group in the bar opens a dropdown listing all machines and their live stats.</p>
+      <pre style="font-size:10px;color:#7ee787;margin-top:8px">- type: group
+  name: Servers
+  items:
+    - type: monitor
+      name: Mac Studio
+      adapter: dashdot
+      url: http://192.168.1.10:3001
+    - type: monitor
+      name: NAS
+      adapter: glances
+      url: http://192.168.1.20:61208</pre>
+    </div>
+  </div>
+
+</div>

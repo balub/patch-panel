@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Monitor item types</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a1d23;
+    color: #e6e6e9;
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, Menlo, Consolas, monospace;
+    padding: 32px 24px;
+    min-height: 100vh;
+  }
+
+  h2 { font-size: 15px; font-weight: 600; color: #e6e6e9; margin-bottom: 6px; }
+  .subtitle { font-size: 12px; color: #858a93; margin-bottom: 28px; font-family: sans-serif; }
+
+  /* ── Real bar replica ── */
+  .bar-wrap { margin-bottom: 32px; }
+  .bar-label { font-size: 10px; color: #858a93; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-family: sans-serif; }
+
+  .bar {
+    display: flex;
+    align-items: stretch;
+    height: 30px;
+    background: #14161a;
+    border-bottom: 1px solid #242830;
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 10px;
+    height: 100%;
+    color: #858a93;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+    transition: color 120ms ease;
+    text-decoration: none;
+  }
+  .item + .item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 25%; bottom: 25%;
+    width: 1px;
+    background: rgba(255,255,255,0.05);
+  }
+  .item:hover { color: #e6e6e9; }
+
+  .icon {
+    width: 14px; height: 14px;
+    display: inline-block; flex-shrink: 0;
+    border-radius: 2px; object-fit: contain;
+    filter: saturate(0.55) brightness(0.92);
+  }
+
+  .cog {
+    margin-left: auto;
+    padding: 0 12px;
+    font-size: 13px;
+    color: #858a93;
+  }
+
+  /* ── monitor-value item ── */
+  .monitor-value {
+    gap: 0;
+    padding: 0 10px;
+  }
+  .monitor-value .mv-name {
+    color: #858a93;
+    margin-right: 6px;
+    font-size: 10.5px;
+  }
+  .monitor-value .mv-metrics {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .monitor-value .mv-metric {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .mv-label { color: #858a93; font-size: 9.5px; text-transform: uppercase; }
+  .mv-val   { font-size: 11px; font-weight: 600; }
+  .mv-sep   { color: rgba(255,255,255,0.12); font-size: 10px; }
+  .cpu  { color: #7ee787; }
+  .ram  { color: #d2a8ff; }
+  .gpu  { color: #ff9d42; }
+  .net  { color: #79c0ff; }
+
+  /* ── monitor-graph item ── */
+  .monitor-graph {
+    padding: 0 10px;
+    gap: 6px;
+    min-width: 0;
+  }
+  .mg-name {
+    color: #858a93;
+    font-size: 10.5px;
+    white-space: nowrap;
+  }
+  .mg-graphs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .mg-graph {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+  }
+  .mg-graph svg {
+    display: block;
+  }
+  .mg-val {
+    font-size: 8.5px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* ── Annotation boxes ── */
+  .annotations { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+  .ann-box {
+    background: #1a1d23;
+    border: 1px solid #242830;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 160ms;
+  }
+  .ann-box:hover { border-color: #ff9d42; }
+  .ann-box.selected { border-color: #ff9d42; background: rgba(255,157,66,0.06); }
+  .ann-title { font-size: 12px; font-weight: 700; color: #e6e6e9; margin-bottom: 6px; }
+  .ann-desc  { font-size: 11px; color: #858a93; line-height: 1.5; font-family: sans-serif; }
+  .ann-yaml  { margin-top: 10px; background: #0d1117; border-radius: 5px; padding: 8px; font-size: 10px; color: #7ee787; line-height: 1.6; }
+  .check { float: right; color: #ff9d42; font-size: 14px; display: none; }
+  .ann-box.selected .check { display: block; }
+
+  /* selection bar at top */
+  #sel-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: #14161a; border-top: 1px solid #242830;
+    padding: 10px 24px; font-size: 11px; color: #858a93;
+    display: none; font-family: sans-serif;
+    z-index: 999;
+  }
+  #sel-bar.visible { display: block; }
+  #sel-bar span { color: #ff9d42; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<h2>Two new monitor item types</h2>
+<p class="subtitle">Both fit into the existing bar as native items — no structural changes. YAML stays the same shape.</p>
+
+<!-- Bar 1: monitor-value -->
+<div class="bar-wrap">
+  <div class="bar-label">type: monitor-value &nbsp;—&nbsp; numerical display</div>
+  <div class="bar">
+    <a class="item" href="#">
+      <img class="icon" src="https://www.google.com/s2/favicons?domain=proxmox.com&sz=64" alt="">
+      <span class="label">Proxmox</span>
+    </a>
+    <a class="item" href="#">
+      <img class="icon" src="https://www.google.com/s2/favicons?domain=portainer.io&sz=64" alt="">
+      <span class="label">Portainer</span>
+    </a>
+
+    <!-- monitor-value item -->
+    <div class="item monitor-value">
+      <span class="mv-name">Mac Studio</span>
+      <div class="mv-metrics">
+        <div class="mv-metric">
+          <span class="mv-label">cpu&nbsp;</span><span class="mv-val cpu">34%</span>
+        </div>
+        <span class="mv-sep">·</span>
+        <div class="mv-metric">
+          <span class="mv-label">ram&nbsp;</span><span class="mv-val ram">61%</span>
+        </div>
+        <span class="mv-sep">·</span>
+        <div class="mv-metric">
+          <span class="mv-label">gpu&nbsp;</span><span class="mv-val gpu">12%</span>
+        </div>
+      </div>
+    </div>
+
+    <a class="item" href="#">
+      <img class="icon" src="https://www.google.com/s2/favicons?domain=bitwarden.com&sz=64" alt="">
+      <span class="label">Vaultwarden</span>
+    </a>
+    <button class="item cog">⚙</button>
+  </div>
+</div>
+
+<!-- Bar 2: monitor-graph -->
+<div class="bar-wrap">
+  <div class="bar-label">type: monitor-graph &nbsp;—&nbsp; sparkline display</div>
+  <div class="bar">
+    <a class="item" href="#">
+      <img class="icon" src="https://www.google.com/s2/favicons?domain=proxmox.com&sz=64" alt="">
+      <span class="label">Proxmox</span>
+    </a>
+    <a class="item" href="#">
+      <img class="icon" src="https://www.google.com/s2/favicons?domain=portainer.io&sz=64" alt="">
+      <span class="label">Portainer</span>
+    </a>
+
+    <!-- monitor-graph item -->
+    <div class="item monitor-graph">
+      <span class="mg-name">Mac Studio</span>
+      <div class="mg-graphs">
+        <!-- CPU sparkline -->
+        <div class="mg-graph">
+          <svg width="36" height="14" viewBox="0 0 36 14">
+            <polyline points="0,11 4,9 8,7 12,10 16,6 20,8 24,5 28,7 32,4 36,4"
+              fill="none" stroke="#7ee787" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.85"/>
+            <circle cx="36" cy="4" r="1.5" fill="#7ee787"/>
+          </svg>
+          <span class="mg-val cpu">34%</span>
+        </div>
+        <!-- RAM sparkline -->
+        <div class="mg-graph">
+          <svg width="36" height="14" viewBox="0 0 36 14">
+            <polyline points="0,5 4,5 8,5 12,6 16,5 20,5 24,6 28,5 32,5 36,5"
+              fill="none" stroke="#d2a8ff" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.85"/>
+            <circle cx="36" cy="5" r="1.5" fill="#d2a8ff"/>
+          </svg>
+          <span class="mg-val ram">61%</span>
+        </div>
+        <!-- GPU sparkline -->
+        <div class="mg-graph">
+          <svg width="36" height="14" viewBox="0 0 36 14">
+            <polyline points="0,10 4,9 8,11 12,8 16,12 20,10 24,11 28,9 32,11 36,10"
+              fill="none" stroke="#ff9d42" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.85"/>
+            <circle cx="36" cy="10" r="1.5" fill="#ff9d42"/>
+          </svg>
+          <span class="mg-val gpu">12%</span>
+        </div>
+      </div>
+    </div>
+
+    <a class="item" href="#">
+      <img class="icon" src="https://www.google.com/s2/favicons?domain=bitwarden.com&sz=64" alt="">
+      <span class="label">Vaultwarden</span>
+    </a>
+    <button class="item cog">⚙</button>
+  </div>
+</div>
+
+<!-- Select which you want -->
+<div class="annotations">
+  <div class="ann-box" id="box-value" onclick="select('value')">
+    <span class="check">✓</span>
+    <div class="ann-title">monitor-value</div>
+    <div class="ann-desc">Shows current readings as compact text. Clean, minimal. Works well when you just need a quick sanity check.</div>
+    <div class="ann-yaml">- type: monitor-value
+  name: Mac Studio
+  adapter: dashdot
+  url: http://192.168.1.10:3001
+  metrics: [cpu, ram, gpu]
+  interval: 10</div>
+  </div>
+  <div class="ann-box" id="box-graph" onclick="select('graph')">
+    <span class="check">✓</span>
+    <div class="ann-title">monitor-graph</div>
+    <div class="ann-desc">Shows a sparkline per metric with the latest value below. Lets you see trends at a glance without opening anything.</div>
+    <div class="ann-yaml">- type: monitor-graph
+  name: Mac Studio
+  adapter: dashdot
+  url: http://192.168.1.10:3001
+  metrics: [cpu, ram, gpu]
+  interval: 10</div>
+  </div>
+</div>
+
+<div id="sel-bar">Selected: <span id="sel-text">none</span> — confirm in terminal</div>
+
+<script>
+const selected = new Set();
+function select(id) {
+  const box = document.getElementById('box-' + id);
+  if (selected.has(id)) {
+    selected.delete(id);
+    box.classList.remove('selected');
+  } else {
+    selected.add(id);
+    box.classList.add('selected');
+  }
+  const bar = document.getElementById('sel-bar');
+  const txt = document.getElementById('sel-text');
+  if (selected.size > 0) {
+    bar.classList.add('visible');
+    txt.textContent = [...selected].join(' + ');
+    // emit to companion
+    selected.forEach(c => {
+      if (window.__patchSelections) window.__patchSelections.add(c);
+    });
+    if (window.recordSelection) window.recordSelection([...selected].join(','));
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+</script>
+
+</body>
+</html>

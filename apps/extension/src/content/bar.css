@@ -432,3 +432,105 @@
   color: var(--pp-accent);
   transform: rotate(60deg);
 }
+
+/* ── Monitor value item ─────────────────────────────────── */
+.monitor-value {
+  gap: 0;
+  max-width: none;
+}
+
+.mv-name {
+  color: var(--pp-text-dim);
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.mv-metrics {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.mv-sep {
+  color: var(--pp-divider);
+  font-size: 10px;
+}
+
+.mv-val {
+  font-weight: 600;
+  font-size: 10.5px;
+}
+
+.mv-cpu  { color: #3d7a3d; }
+.mv-ram  { color: #7a5c9e; }
+.mv-gpu  { color: var(--pp-accent); }
+.mv-disk { color: #8a6a2e; }
+.mv-network { color: #2e7dad; }
+
+@media (prefers-color-scheme: dark) {
+  .mv-cpu  { color: #7ee787; }
+  .mv-ram  { color: #d2a8ff; }
+  .mv-gpu  { color: #ff9d42; }
+  .mv-disk { color: #e3b341; }
+  .mv-network { color: #79c0ff; }
+}
+
+.monitor-stale {
+  opacity: 0.45;
+}
+
+/* ── Monitor graph item ─────────────────────────────────── */
+
+:host {
+  --mg-cpu:  #3d7a3d;
+  --mg-ram:  #7a5c9e;
+  --mg-gpu:  #b8541f;
+  --mg-net:  #2e7dad;
+  --mg-disk: #8a6a2e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --mg-cpu:  #7ee787;
+    --mg-ram:  #d2a8ff;
+    --mg-gpu:  #ff9d42;
+    --mg-net:  #79c0ff;
+    --mg-disk: #e3b341;
+  }
+}
+
+.monitor-graph {
+  gap: 6px;
+  max-width: none;
+}
+
+.mg-name {
+  color: var(--pp-text-dim);
+  font-size: 10.5px;
+  flex-shrink: 0;
+}
+
+.mg-graphs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mg-cell {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.mg-val {
+  font-size: 8.5px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.mg-cpu     { color: var(--mg-cpu); }
+.mg-ram     { color: var(--mg-ram); }
+.mg-gpu     { color: var(--mg-gpu); }
+.mg-network { color: var(--mg-net); }
+.mg-disk    { color: var(--mg-disk); }

@@ -105,6 +105,37 @@ items:
         url: https://nextcloud.local
         icon: https://www.google.com/s2/favicons?domain=nextcloud.com&sz=64
 
+  - type: monitor-value
+    name: Mac Studio
+    adapter: dashdot
+    url: http://192.168.1.10:3001
+    metrics: [cpu, ram, gpu]
+    interval: 10
+
+  - type: monitor-graph
+    name: NAS
+    adapter: glances
+    url: http://192.168.1.20:61208
+    metrics: [cpu, ram]
+    history: 20
+
+  - type: group
+    name: Servers
+    items:
+      - type: monitor-graph
+        name: Mac Studio
+        adapter: dashdot
+        url: http://192.168.1.10:3001
+        metrics: [cpu, ram, gpu]
+      - type: monitor-value
+        name: NAS
+        adapter: glances
+        url: http://192.168.1.20:61208
+        metrics: [cpu, ram, disk]
+      - type: service
+        name: Grafana
+        url: http://grafana.local
+
   - type: service
     name: Vaultwarden
     url: https://vault.local

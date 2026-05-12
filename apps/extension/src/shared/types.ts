@@ -9,14 +9,35 @@ export interface ServiceItem {
   icon?: string;
 }
 
+export type MetricKey = 'cpu' | 'ram' | 'gpu' | 'network' | 'disk';
+
+export interface MonitorValueItem {
+  type: 'monitor-value';
+  name: string;
+  adapter: 'dashdot' | 'glances';
+  url: string;
+  metrics?: MetricKey[];   // default: ['cpu', 'ram']
+  interval?: number;       // seconds, default 10
+}
+
+export interface MonitorGraphItem {
+  type: 'monitor-graph';
+  name: string;
+  adapter: 'dashdot' | 'glances';
+  url: string;
+  metrics?: MetricKey[];   // default: ['cpu', 'ram']
+  interval?: number;       // seconds, default 10
+  history?: number;        // readings to show in sparkline, default 20
+}
+
 export interface GroupItem {
   type: 'group';
   name: string;
   icon?: string;
-  items: ServiceItem[];
+  items: Item[];
 }
 
-export type Item = ServiceItem | GroupItem;
+export type Item = ServiceItem | GroupItem | MonitorValueItem | MonitorGraphItem;
 
 export interface NormalizedConfig {
   title?: string;
